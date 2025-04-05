@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+</head>
+<body>
+  <svg width="600" height="1000" viewBox="0 0 600 1000">
+    <style>
+      .event-circle:hover { stroke-width: 2; stroke: #ff4444; }
+      .event-text { font: 12px sans-serif; fill: #333; }
+      .timeline-path { stroke: #666; stroke-width: 2; }
+      .era-section { opacity: 0.1; }
+      .tooltip { 
+        position: absolute;
+        padding: 8px;
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        pointer-events: none;
+      }
+    </style>
+
+    <!-- 垂直时间线 -->
+    <path class="timeline-path" d="M300 50 L300 950"/>
+    
+    <!-- 历史时期垂直划分 -->
+    <rect class="era-section" x="100" y="50" width="400" height="250" fill="#9fc5e8"/>
+    <rect class="era-section" x="100" y="300" width="400" height="450" fill="#b6d7a8"/>
+    <rect class="era-section" x="100" y="750" width="400" height="200" fill="#ea9999"/>
+
+    <!-- 垂直时间刻度 -->
+    <g transform="translate(300 50)">
+      <path d="M0 0 h-20" transform="translate(0 0)" stroke="#666"/>
+      <path d="M0 0 h-20" transform="translate(0 150)" stroke="#666"/>
+      <path d="M0 0 h-20" transform="translate(0 300)" stroke="#666"/>
+      <text x="-40" y="5" text-anchor="end">1600</text>
+      <text x="-40" y="155" text-anchor="end">1700</text>
+      <text x="-40" y="305" text-anchor="end">1800</text>
+      <text x="-40" y="455" text-anchor="end">1900</text>
+    </g>
+
+    <!-- 垂直事件节点 -->
+    <g class="event-group">
+      <circle class="event-circle" cx="300" cy="50" r="6" fill="#2b78e4" data-year="1616"/>
+      <circle class="event-circle" cx="300" cy="200" r="6" fill="#6aa84f" data-year="1644"/>
+      <circle class="event-circle" cx="300" cy="400" r="6" fill="#6aa84f" data-year="1661"/>
+      <circle class="event-circle" cx="300" cy="700" r="6" fill="#cc0000" data-year="1840"/>
+      <circle class="event-circle" cx="300" cy="750" r="6" fill="#e69138" data-year="1851"/>
+      <circle class="event-circle" cx="300" cy="850" r="6" fill="#cc0000" data-year="1894"/>
+      <circle class="event-circle" cx="300" cy="950" r="6" fill="#9900ff" data-year="1912"/>
+    </g>
+
+    <!-- 垂直事件标注 -->
+    <g class="event-labels">
+      <text class="event-text" x="320" y="50" dy="4">后金建立 (1616)</text>
+      <text class="event-text" x="320" y="200" dy="4">清军入关 (1644)</text>
+      <text class="event-text" x="320" y="400" dy="4">康乾盛世开始 (1661)</text>
+      <text class="event-text" x="320" y="700" dy="4">鸦片战争 (1840)</text>
+      <text class="event-text" x="320" y="750" dy="4">太平天国 (1851)</text>
+      <text class="event-text" x="320" y="850" dy="4">甲午战争 (1894)</text>
+      <text class="event-text" x="320" y="950" dy="4">清朝终结 (1912)</text>
+    </g>
+
+    <!-- 垂直辅助线 -->
+    <path d="M100 400 L500 400" stroke="#999" stroke-dasharray="4"/>
+    <text x="200" y="420">康乾盛世</text>
+    <text x="200" y="930" fill="#9900ff">辛亥革命</text>
+
+    <script>
+      // 保持原有交互逻辑不变
+      document.querySelectorAll('.event-circle').forEach(item => {
+        item.addEventListener('mouseover', function() {
+          const year = this.dataset.year;
+          const events = {
+            '1616': '努尔哈赤建立后金政权',
+            '1644': '清军入关，建立全国性政权',
+            '1661': '康熙即位，开启康乾盛世',
+            '1840': '第一次鸦片战争爆发',
+            '1851': '太平天国运动兴起',
+            '1894': '甲午中日战争',
+            '1912': '宣统帝退位，清朝灭亡'
+          };
+          showTooltip(this.getBoundingClientRect(), `${year}年\n${events[year]}`);
+        });
+      });
+
+      function showTooltip(pos, text) {
+        let tooltip = document.querySelector('.tooltip');
+        if (!tooltip) {
+          tooltip = document.createElement('div');
+          tooltip.className = 'tooltip';
+          document.body.appendChild(tooltip);
+        }
+        tooltip.style.left = `${pos.left + window.scrollX}px`;
+        tooltip.style.top = `${pos.top + window.scrollY - 30}px`;
+        tooltip.innerHTML = text;
+      }
+    </script>
+  </svg>
+</body>
+</html>

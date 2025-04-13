@@ -12,8 +12,5 @@
 
 1. 此目录主要用于 code-server 功能测试
 2. 可以随意修改或删除任何文件
-3. 如需使用 Python 虚拟环境:
-   ```bash
-   source test/bin/activate
-   ```
+3. 如需使用 Python 虚拟环境:请使用conda，目前我不再使用venv，而改用了conda
 4. 文件不代表任何实际项目
